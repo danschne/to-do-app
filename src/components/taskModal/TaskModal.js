@@ -14,6 +14,11 @@ function TaskModal({ visible, hide, title, task, submit }) {
   const [editableTask, dispatchEditableTask] = useReducer(taskReducer, task ?? new Task());
   const taskWasEdited = detectChanges();
 
+  /*
+   * This handler function for the whole form in combination with the task reducer
+   * synchronizes the task state with the fields of the form. It includes field
+   * validation and is open to modifications of the task entity.
+   */
   function handleChange(event) {
     const { name, value } = event.target;
     const valid = event.currentTarget.checkValidity();
@@ -27,6 +32,9 @@ function TaskModal({ visible, hide, title, task, submit }) {
     });
   }
 
+  /*
+   * Reset the dialog.
+   */
   function handleClose() {
     hide();
     dispatchEditableTask({
@@ -40,7 +48,7 @@ function TaskModal({ visible, hide, title, task, submit }) {
   }
 
   /*
-   *  Handles the enter key.
+   * Handles the enter key.
    */
   function handleSubmit(event) {
     event.preventDefault();
@@ -49,7 +57,7 @@ function TaskModal({ visible, hide, title, task, submit }) {
   }
 
   /*
-   *  Handles the button click.
+   * Handles the button click.
    */
   function submitTask() {
     submit.action(editableTask);
@@ -61,15 +69,15 @@ function TaskModal({ visible, hide, title, task, submit }) {
       <Modal.Header closeButton>{title}</Modal.Header>
       <Modal.Body>
         <Container>
-            <Form validated={taskWasEdited} onChange={handleChange} onSubmit={handleSubmit}>
-                <Row>
-                    <Form.Group as={Col} controlId="formTaskDescription">
-                        <Form.Label>Beschreibung</Form.Label>
-                        <Form.Control type="text" name="description" required
-                                      defaultValue={editableTask.description} />
-                    </Form.Group>
-                </Row>
-            </Form>
+          <Form validated={taskWasEdited} onChange={handleChange} onSubmit={handleSubmit}>
+            <Row>
+              <Form.Group as={Col} controlId="formTaskDescription">
+                <Form.Label>Beschreibung</Form.Label>
+                <Form.Control type="text" name="description" required
+                              defaultValue={editableTask.description} />
+              </Form.Group>
+            </Row>
+          </Form>
         </Container>
       </Modal.Body>
       <Modal.Footer>
