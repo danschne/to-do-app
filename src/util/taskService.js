@@ -29,6 +29,15 @@ const taskService = function() {
     return [...tasks];
   }
 
+  function updateTask(task) {
+    const index = tasks.findIndex(elem => elem.id === task.id);
+
+    tasks.splice(index, 1, task);
+    localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+
+    return task;
+  }
+
   function getTasksFromLocalStorage() {
     const tasksJson = localStorage.getItem(TASKS_KEY);
 
@@ -41,6 +50,7 @@ const taskService = function() {
   return {
     createTask: createTask,
     getTasks: getTasks,
+    updateTask: updateTask,
   }
 
 }();

@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import TaskModal from '../taskModal/TaskModal';
 import produce from 'immer';
 import taskService from '../../util/taskService';
+import TaskList from '../taskList/TaskList';
 
 function App() {
   
@@ -15,9 +16,19 @@ function App() {
   const hideCreateTaskModal = () => setCreateTaskModalVisible(false);
 
   function createTask(task) {
-    const savedTask = taskService.createTask(task);
+    const createdTask = taskService.createTask(task);
+    
     setTasks(produce(draft => {
-      draft.push(savedTask);
+      draft.push(createdTask);
+    }));
+  }
+
+  function updateTask(task) {
+    const updatedTask = taskService.updateTask(task);
+
+    setTasks(produce(draft => {
+      const index = draft.findIndex(elem => elem.id === updatedTask.id);
+      draft.splice(index, 1, updatedTask);
     }));
   }
 
@@ -35,9 +46,10 @@ function App() {
             </Row>
             <Row>
               <Col>
-                { tasks.length === 0
+                {
+                  tasks.length === 0
                   ? <p>Keine Tasks vorhanden</p>
-                  : <p>task list</p>
+                  : <TaskList tasks={tasks} updateTask={updateTask} />
                 }
               </Col>
             </Row>
