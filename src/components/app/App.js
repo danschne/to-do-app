@@ -5,18 +5,19 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import TaskModal from '../taskModal/TaskModal';
 import produce from 'immer';
+import taskService from '../../util/taskService';
 
 function App() {
   
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(taskService.getTasks());
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
   const showCreateTaskModal = () => setCreateTaskModalVisible(true);
   const hideCreateTaskModal = () => setCreateTaskModalVisible(false);
 
   function createTask(task) {
-    // put into database (local storage)
+    const savedTask = taskService.createTask(task);
     setTasks(produce(draft => {
-      draft.push(task);
+      draft.push(savedTask);
     }));
   }
 
