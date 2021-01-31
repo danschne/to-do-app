@@ -1,9 +1,9 @@
-import generateRandomId from "../util/util";
+import { immerable } from "immer";
 
 class Task {
 
-  Task() {
-    this.id = generateRandomId();
+  constructor() {
+    this[immerable] = true;
     this.description = "";
     this.checked = false;
   }

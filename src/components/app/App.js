@@ -3,18 +3,26 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import EditTaskModal from '../editTaskModal/EditTaskModal';
+import TaskModal from '../taskModal/TaskModal';
+import produce from 'immer';
 
 function App() {
   
-  const tasks = [];
+  const [tasks, setTasks] = useState([]);
   const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
   const showCreateTaskModal = () => setCreateTaskModalVisible(true);
   const hideCreateTaskModal = () => setCreateTaskModalVisible(false);
 
+  function createTask(task) {
+    // put into database (local storage)
+    setTasks(produce(draft => {
+      draft.push(task);
+    }));
+  }
+
   return (
     <>
-      <Container fluid id="in-dev">
+      <Container fluid>
         <Row>
           <Col lg={{ offset: 4, span: 4 }}>
             <Row>
@@ -28,7 +36,7 @@ function App() {
               <Col>
                 { tasks.length === 0
                   ? <p>Keine Tasks vorhanden</p>
-                  : <p>content</p>
+                  : <p>task list</p>
                 }
               </Col>
             </Row>
@@ -36,7 +44,8 @@ function App() {
         </Row>
       </Container>
 
-      <EditTaskModal visible={createTaskModalVisible} hide={hideCreateTaskModal} />
+      <TaskModal visible={createTaskModalVisible} hide={hideCreateTaskModal}
+                 title="Neuen Task anlegen" submit={{ title: "Task anlegen", action: createTask }} />
     </>
   );
 
