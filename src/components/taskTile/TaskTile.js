@@ -6,7 +6,11 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import produce from "immer";
 
-function TaskTile({ task, updateTask }) {
+function TaskTile({ task, updateTask, active, setActive }) {
+
+  function setTileAsActive() {
+    setActive(task);
+  }
 
   function handleCheckChange(event) {
     updateTask(produce(task, draft => {
@@ -15,16 +19,19 @@ function TaskTile({ task, updateTask }) {
   }
 
   return (
-    <Row>
+    <Row onClick={setTileAsActive} className={active ? "border border-primary" : ""}>
       <Col lg="1">
         <Form.Check type="checkbox" checked={task.checked} onChange={handleCheckChange} />
       </Col>
       <Col>
         {task.description}
       </Col>
-      <Col lg="2">
-        pen can
-      </Col>
+      {
+        active &&
+        <Col lg="1">
+          pen and can icons
+        </Col>
+      }
     </Row>
   );
 
@@ -33,6 +40,8 @@ function TaskTile({ task, updateTask }) {
 TaskTile.propTypes = {
   task: PropTypes.instanceOf(Task).isRequired,
   updateTask: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
+  setActive: PropTypes.func.isRequired,
 };
 
 export default TaskTile;

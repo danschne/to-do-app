@@ -5,14 +5,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import TaskTile from "../taskTile/TaskTile";
 
-function TaskList({ tasks, updateTask }) {
+function TaskList({ tasks, updateTask, setActive }) {
 
   return (
     <Row>
       <Col>
         {
           tasks.map(task => 
-            <TaskTile key={task.id} task={task} updateTask={updateTask} />
+            <TaskTile key={task.id} task={task} updateTask={updateTask} active={task.active}
+                      setActive={setActive} />
           )
         }
       </Col>
@@ -24,6 +25,7 @@ function TaskList({ tasks, updateTask }) {
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.instanceOf(Task)).isRequired,
   updateTask: PropTypes.func.isRequired,
+  setActive: PropTypes.func.isRequired,
 };
 
 export default TaskList;

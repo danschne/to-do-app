@@ -7,6 +7,7 @@ class Task {
 
     this.description = "";
     this.checked = false;
+    this.active = false;
   }
 
   static fromJson(json) {

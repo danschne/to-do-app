@@ -21,6 +21,7 @@ function App() {
     setTasks(produce(draft => {
       draft.push(createdTask);
     }));
+    setTaskActive(createdTask);
   }
 
   function updateTask(task) {
@@ -29,6 +30,22 @@ function App() {
     setTasks(produce(draft => {
       const index = draft.findIndex(elem => elem.id === updatedTask.id);
       draft.splice(index, 1, updatedTask);
+    }));
+    setTaskActive(updatedTask);
+  }
+
+  function setTaskActive(task) {
+    const indexCurrentActive = tasks.findIndex(elem => elem.active === true);
+    
+    if (tasks[indexCurrentActive]?.id === task.id) {
+      return;
+    }
+    setTasks(produce(draft => {
+      if (indexCurrentActive !== -1) {
+        draft[indexCurrentActive].active = false;
+      }
+      const indexNewActive = draft.findIndex(elem => elem.id === task.id);
+      draft[indexNewActive].active = true;
     }));
   }
 
@@ -49,7 +66,7 @@ function App() {
                 {
                   tasks.length === 0
                   ? <p>Keine Tasks vorhanden</p>
-                  : <TaskList tasks={tasks} updateTask={updateTask} />
+                  : <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive} />
                 }
               </Col>
             </Row>
