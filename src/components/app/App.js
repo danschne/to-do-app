@@ -34,6 +34,15 @@ function App() {
     setTaskActive(updatedTask);
   }
 
+  function deleteTask(task) {
+    const deletedTask = taskService.deleteTask(task);
+
+    setTasks(produce(draft => {
+      const index = draft.findIndex(elem => elem.id === deletedTask.id);
+      draft.splice(index, 1);
+    }));
+  }
+
   function setTaskActive(task) {
     const indexCurrentActive = tasks.findIndex(elem => elem.active === true);
     
@@ -66,7 +75,8 @@ function App() {
                 {
                   tasks.length === 0
                   ? <p>Keine Tasks vorhanden</p>
-                  : <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive} />
+                  : <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive}
+                              deleteTask={deleteTask} />
                 }
               </Col>
             </Row>

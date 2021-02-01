@@ -47,10 +47,20 @@ const taskService = function() {
     return JSON.parse(tasksJson).map(elem => Task.fromJson(elem));
   }
 
+  function deleteTask(task) {
+    const index = tasks.findIndex(elem => elem.id === task.id);
+
+    tasks.splice(index, 1);
+    localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+
+    return task;
+  }
+
   return {
     createTask: createTask,
     getTasks: getTasks,
     updateTask: updateTask,
+    deleteTask: deleteTask,
   }
 
 }();
