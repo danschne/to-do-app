@@ -58,6 +58,20 @@ function App() {
     }));
   }
 
+  function reorderTask(source, destination) {
+    setTasks(produce(draft => {
+      const task = draft[source];
+      draft.splice(source, 1);
+      draft.splice(destination, 0, task);
+      /*
+       * Macht immer hier eigentlich irgendwelche Magie, sodass der Tausch
+       * in der Art und Weise funktioniert? Eigentlich verkürzt sich ja das
+       * Feld erst um 1, wodurch der Zielindex beim Wiedereinfügen um 1
+       * verschoben sein müsste.
+       */
+    }));
+  }
+
   return (
     <>
       <Container fluid>
@@ -76,7 +90,7 @@ function App() {
                   tasks.length === 0
                   ? <p>Keine Tasks vorhanden</p>
                   : <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive}
-                              deleteTask={deleteTask} />
+                              deleteTask={deleteTask} reorderTask={reorderTask} />
                 }
               </Col>
             </Row>
