@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
 import Task from "../../entities/task";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import produce from "immer";
-import { Trash2 } from 'react-bootstrap-icons';
+import { Trash2, Pencil } from 'react-bootstrap-icons';
+import TaskModal from "../taskModal/TaskModal";
 
 function TaskTile({ task, updateTask, active, setActive, deleteTask }) {
+
+  const [editTaskModalVisible, setEditTaskModalVisible] = useState(false);
+  const showEditTaskModal = () => setEditTaskModalVisible(true);
+  const hideEditTaskModal = () => setEditTaskModalVisible(false);
 
   function setTileAsActive() {
     setActive(task);
@@ -34,10 +39,17 @@ function TaskTile({ task, updateTask, active, setActive, deleteTask }) {
       </Col>
       {
         active &&
-        <Col lg="2">
+        <Col lg="3">
+          <button onClick={showEditTaskModal} className="bg-white border-0">
+            <Pencil size={24} />
+          </button>
           <button onClick={handleDelete} className="bg-white border-0">
             <Trash2 size={24} />
           </button>
+
+          <TaskModal visible={editTaskModalVisible} hide={hideEditTaskModal}
+                     title="Task bearbeiten" task={task}
+                     submit={{ title: "Task speichern", action: updateTask }} />
         </Col>
       }
     </Row>

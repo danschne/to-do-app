@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import Modal from "react-bootstrap/Modal";
 import PropTypes from 'prop-types';
 import Button from "react-bootstrap/Button";
@@ -13,6 +13,26 @@ function TaskModal({ visible, hide, title, task, submit }) {
 
   const [editableTask, dispatchEditableTask] = useReducer(taskReducer, task ?? new Task());
   const taskWasEdited = detectChanges();
+
+  /*
+   * This effect is necessary to adjust to the new value of "editableTask"
+   * after resetting the dialog with the old one when the form is submitted.
+   */
+  /*
+   * Persönliche Anmerkung:
+   * Ich würde vermuten/hoffen, dass man sich durch einen geschickten Effekt
+   * den dispatch in handleClose() sparen kann und der Dialog dann nur in
+   * einem Effekt zentral vorbereitet wird. Dann müsste man nicht nach dem
+   * Dialog resetten und trotzdem in manchen Fällen beim Neuaufruf des Dialogs
+   * nochmal zusätzlich eingreifen. Leider fällt mir im Moment keine
+   * geschicktere Lösung ein :-)
+   */
+  useEffect(() => {
+    dispatchEditableTask({
+      type: "reset",
+      payload: task ?? new Task(),
+    });
+  }, [task]);
 
   /*
    * This handler function for the whole form in combination with the task reducer
@@ -39,7 +59,7 @@ function TaskModal({ visible, hide, title, task, submit }) {
     hide();
     dispatchEditableTask({
       type: "reset",
-      payload: new Task(), // task ?? needed prior to constructor call?
+      payload: task ?? new Task(),
     });
   }
 
