@@ -22,6 +22,13 @@ function TaskList({ tasks, updateTask, setActive, deleteTask, reorderTask }) {
 		reorderTask(source.index, destination.index);
 	}
 
+  if (tasks.length === 0) {
+    return (
+      <Row className="mt-2">
+        <p>Keine Tasks vorhanden.</p>
+      </Row>
+    );
+  }
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="toDoListDroppable">
@@ -29,13 +36,13 @@ function TaskList({ tasks, updateTask, setActive, deleteTask, reorderTask }) {
           provided => 
           <Row ref={provided.innerRef} {...provided.droppableProps}>
             <Col ref={taskListContainer}>
-            {
-              tasks.map((task, index) => 
-                <TaskTile key={task.id} task={task} updateTask={updateTask} active={task.active}
-                          setActive={setActive} deleteTask={deleteTask} index={index} />
-              )
-            }
-            { provided.placeholder }
+              {
+                tasks.map((task, index) => 
+                  <TaskTile key={task.id} task={task} updateTask={updateTask} active={task.active}
+                            setActive={setActive} deleteTask={deleteTask} index={index} />
+                )
+              }
+              { provided.placeholder }
             </Col>
           </Row>
         }

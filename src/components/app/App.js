@@ -59,8 +59,9 @@ function App() {
   }
 
   function reorderTask(source, destination) {
+    const task = tasks[source];
+
     setTasks(produce(draft => {
-      const task = draft[source];
       draft.splice(source, 1);
       draft.splice(destination, 0, task);
       /*
@@ -70,28 +71,23 @@ function App() {
        * verschoben sein müsste.
        */
     }));
+    setTaskActive(task);
   }
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="pt-2">
         <Row>
           <Col lg={{ offset: 4, span: 4 }}>
             <Row>
-              <Col>
-                <Button onClick={showCreateTaskModal} block className="text-left">
-                  Neuen Task anlegen
-                </Button>
-              </Col>
+              <Button onClick={showCreateTaskModal} block>
+                Neuen Task anlegen
+              </Button>
             </Row>
             <Row>
               <Col>
-                {
-                  tasks.length === 0
-                  ? <p>Keine Tasks vorhanden</p>
-                  : <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive}
-                              deleteTask={deleteTask} reorderTask={reorderTask} />
-                }
+                <TaskList tasks={tasks} updateTask={updateTask} setActive={setTaskActive}
+                          deleteTask={deleteTask} reorderTask={reorderTask} />
               </Col>
             </Row>
           </Col>

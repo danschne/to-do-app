@@ -86,7 +86,9 @@ function TaskModal({ visible, hide, title, task, submit }) {
 
   return (
     <Modal show={visible} onHide={handleClose}>
-      <Modal.Header closeButton>{title}</Modal.Header>
+      <Modal.Header closeButton>
+        <h5>{title}</h5>
+      </Modal.Header>
       <Modal.Body>
         <Container>
           <Form validated={taskWasEdited} onChange={handleChange} onSubmit={handleSubmit}>
@@ -104,7 +106,7 @@ function TaskModal({ visible, hide, title, task, submit }) {
         <Button onClick={submitTask} disabled={!taskWasEdited || !editableTask.valid}>
           {submit.title}
         </Button>
-        <Button onClick={handleClose} variant="secondary">
+        <Button onClick={handleClose} variant="outline-primary">
           Abbrechen
         </Button>
       </Modal.Footer>

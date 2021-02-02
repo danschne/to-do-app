@@ -8,6 +8,7 @@ import produce from "immer";
 import { Trash2, Pencil, GripVertical } from 'react-bootstrap-icons';
 import TaskModal from "../taskModal/TaskModal";
 import { Draggable } from "react-beautiful-dnd";
+import "./TaskTile.css";
 
 function TaskTile({ task, updateTask, active, setActive, deleteTask, index }) {
 
@@ -34,14 +35,14 @@ function TaskTile({ task, updateTask, active, setActive, deleteTask, index }) {
       {  
         provided =>
         <Row onClick={setTileAsActive}
-             className={`mt-2 p-2 ${active ? "border border-primary" : ""}`}
+             className={`mt-2 p-2 rounded ${active ? "border border-md border-primary" : ""} ${task.checked ? "bg-green" : "bg-gray"} align-items-center`}
              {...provided.draggableProps} ref={provided.innerRef}>
-          <Col lg="1">
+          <Col lg="1" className="d-flex justify-content-center">
             <span {...provided.dragHandleProps}>
               <GripVertical size={24} />
             </span>
           </Col>
-          <Col lg="1">
+          <Col lg="1" className="text-center">
             <Form.Check type="checkbox" checked={task.checked} onChange={handleCheckChange} />
           </Col>
           <Col>
@@ -50,8 +51,8 @@ function TaskTile({ task, updateTask, active, setActive, deleteTask, index }) {
           {
               active &&
               <>
-                <Col lg="1">
-                  <button onClick={showEditTaskModal} className="bg-white border-0">
+                <Col lg="1" className="d-flex justify-content-center">
+                  <button onClick={showEditTaskModal} className="bg-transparent border-0 rounded">
                     <Pencil size={24} />
                   </button>
 
@@ -59,8 +60,8 @@ function TaskTile({ task, updateTask, active, setActive, deleteTask, index }) {
                              title="Task bearbeiten" task={task}
                              submit={{ title: "Task speichern", action: updateTask }} />
                 </Col>
-                <Col lg="1">
-                  <button onClick={handleDelete} className="bg-white border-0">
+                <Col lg="1" className="d-flex justify-content-center">
+                  <button onClick={handleDelete} className="bg-transparent border-0 rounded">
                     <Trash2 size={24} />
                   </button>
                 </Col>
